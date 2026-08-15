@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-spotify-green: var(--spotify-green);
+  --color-spotify-green-hover: var(--spotify-green-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-text: var(--accent-text);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-highlight: var(--surface-highlight);
+  --color-subtext: var(--subtext);
+  --color-base: var(--base);
+  --color-primary: var(--primary);
+  --color-inverted: var(--inverted);
+  --color-border-theme: var(--border-color);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-player-bg: var(--player-bg);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+:root {
+  /* Default accent: Electric Violet */
+  --spotify-green: #7c3aed;
+  --spotify-green-hover: #8b5cf6;
+  --accent-rgb: 124, 58, 237;
+  --accent-muted: rgba(124, 58, 237, 0.12);
+  --accent-glow: rgba(124, 58, 237, 0.4);
+  --accent-subtle: rgba(124, 58, 237, 0.06);
+  --accent-text: #ffffff;
+
+  --surface: #121212;
+  --surface-elevated: #1a1a1a;
+  --surface-highlight: #282828;
+  --subtext: #a7a7a7;
+  --base: #000000;
+  --primary: #ffffff;
+  --inverted: #000000;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --sidebar-bg: #000000;
+  --player-bg: #000000;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  --glow-opacity: 0.15;
+}
+
+/* Light mode — do NOT re-declare --spotify-green here so the JS inline style wins */
+.light {
+  --surface: #ffffff;
+  --surface-elevated: #f3f4f6;
+  --surface-highlight: #e5e7eb;
+  --subtext: #4b5563;
+  --base: #f9fafb;
+  --primary: #000000;
+  --inverted: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --sidebar-bg: #ffffff;
+  --player-bg: #ffffff;
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  --glow-opacity: 0.06;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.light * {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+/* Custom thin webkit scrollbars for Chrome, Safari, Edge */
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.light *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.light *::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--base);
+  color: var(--primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--primary);
+}
+
+.light input,
+.light textarea,
+.light select {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.light input::placeholder,
+.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  color: #f1f5f9 !important;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Accent colour on headings and active items */
+.accent-glow {
+  color: var(--spotify-green);
+}
+
+/* Explicit contrast utility classes */
+.text-accent-text {
+  color: var(--accent-text) !important;
+}
+
+/* Global button and tab accent background override to automatically enforce auto-contrast text */
+.bg-spotify-green {
+  background-color: var(--spotify-green) !important;
+  color: var(--accent-text) !important;
+}
+
+.bg-spotify-green-hover:hover,
+.hover\:bg-spotify-green-hover:hover {
+  background-color: var(--spotify-green-hover) !important;
+}
+
+/* Active nav accent background pill */
+.nav-active {
+  background-color: var(--accent-muted);
+  color: var(--spotify-green);
+}
+
+/* Card glass aesthetics */
+.app-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-card:hover {
+  background-color: var(--surface-elevated);
+  border-color: var(--spotify-green);
+  transform: translateY(-2px);
+}
+
+/* Sidebar footer padding bottom rules to prevent bottom bar overlaps */
+.sidebar-footer-active {
+  padding-bottom: calc(148px + env(safe-area-inset-bottom)) !important;
+}
+
+.sidebar-footer-inactive {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+}
+
+@media (min-width: 768px) {
+  .sidebar-footer-active {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important;
+  }
+  .sidebar-footer-inactive {
+    padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Minimal unique page transition */
+@keyframes appPageEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.984) translateY(8px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+.app-page-transition {
+  animation: appPageEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition {
+  animation: fadeInSlideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Hide scrollbars globally on mobile viewports */
+@media (max-width: 768px) {
+  * {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+  }
+}
+
+/* Animated Equalizer Soundwave */
+@keyframes eqBar1 {
+  0%, 100% { height: 3px; }
+  50% { height: 14px; }
+}
+@keyframes eqBar2 {
+  0%, 100% { height: 14px; }
+  50% { height: 5px; }
+}
+@keyframes eqBar3 {
+  0%, 100% { height: 6px; }
+  50% { height: 16px; }
+}
+@keyframes eqBar4 {
+  0%, 100% { height: 12px; }
+  50% { height: 4px; }
+}
+
+.animate-eq-1 {
+  animation: eqBar1 0.8s ease-in-out infinite;
+}
+.animate-eq-2 {
+  animation: eqBar2 0.7s ease-in-out infinite 0.15s;
+}
+.animate-eq-3 {
+  animation: eqBar3 0.9s ease-in-out infinite 0.3s;
+}
+.animate-eq-4 {
+  animation: eqBar4 0.75s ease-in-out infinite 0.45s;
+}
+
+/* Shimmer Top Glow Line for Player */
+@keyframes playerGlowSweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-player-glow {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--spotify-green) 30%,
+    #38bdf8 50%,
+    var(--spotify-green) 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: playerGlowSweep 5s linear infinite;
+}

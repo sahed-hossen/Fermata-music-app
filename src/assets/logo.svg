@@ -1,0 +1,77 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- App-icon background gradient: deep space navy to violet -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F2B"/>
+      <stop offset="55%" stop-color="#12102B"/>
+      <stop offset="100%" stop-color="#1A0E2E"/>
+    </linearGradient>
+
+    <!-- Soft top-left highlight for depth, like Spotify/Apple Music icons -->
+    <radialGradient id="bgGlow" cx="30%" cy="22%" r="70%">
+      <stop offset="0%" stop-color="#3A2B6B" stop-opacity="0.55"/>
+      <stop offset="45%" stop-color="#1A1440" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0B0F2B" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Main mark gradient: teal -> sky blue -> violet -> magenta -->
+    <linearGradient id="markGradient" x1="60" y1="360" x2="450" y2="230" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"  stop-color="#2EE6C6"/>
+      <stop offset="30%" stop-color="#3AD1E0"/>
+      <stop offset="55%" stop-color="#5B9CF0"/>
+      <stop offset="78%" stop-color="#9B6DF2"/>
+      <stop offset="100%" stop-color="#E560D8"/>
+    </linearGradient>
+
+    <linearGradient id="dotGradient" x1="234" y1="288" x2="278" y2="332" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4FE3D6"/>
+      <stop offset="100%" stop-color="#B36DF0"/>
+    </linearGradient>
+
+    <!-- Glow filter for the neon effect -->
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur1"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- App-icon squircle background -->
+  <rect x="0" y="0" width="512" height="512" rx="112" ry="112" fill="url(#bgGradient)"/>
+  <rect x="0" y="0" width="512" height="512" rx="112" ry="112" fill="url(#bgGlow)"/>
+
+  <!-- Emblem group, glowing neon signal/soundwave burst -->
+  <g fill="none" stroke="url(#markGradient)" stroke-linecap="round" filter="url(#glow)">
+    <!-- Outer wifi-style ring -->
+    <path d="M 115.05 361.30 A 150.00 150.00 0 0 1 229.95 162.28" stroke-width="20"/>
+    <!-- Inner wifi-style ring -->
+    <path d="M 147.82 338.99 A 112.00 112.00 0 0 1 227.01 201.82" stroke-width="17"/>
+
+    <!-- Small transition dashes -->
+    <path d="M 246.49 232.58 A 78.00 78.00 0 0 1 256.00 232.00" stroke-width="15"/>
+    <path d="M 265.51 232.58 A 78.00 78.00 0 0 1 274.87 234.32" stroke-width="15"/>
+    <path d="M 283.95 237.18 A 78.00 78.00 0 0 1 292.62 241.13" stroke-width="15"/>
+
+    <!-- Radiating equalizer-style rays, increasing length like a soundwave burst -->
+    <line x1="290.41" y1="260.85" x2="321.96" y2="215.80" stroke-width="15"/>
+    <line x1="301.96" y1="271.43" x2="356.35" y2="225.79" stroke-width="15"/>
+    <line x1="310.38" y1="284.64" x2="389.23" y2="247.88" stroke-width="15"/>
+    <line x1="315.09" y1="299.58" x2="416.52" y2="281.70" stroke-width="15"/>
+    <line x1="315.77" y1="315.23" x2="434.32" y2="325.60" stroke-width="15"/>
+    <line x1="312.38" y1="330.52" x2="439.24" y2="376.69" stroke-width="15"/>
+    <line x1="305.15" y1="344.41" x2="428.84" y2="431.02" stroke-width="15"/>
+  </g>
+
+  <!-- Anchor dot -->
+  <circle cx="256" cy="310" r="24" fill="url(#dotGradient)" filter="url(#softGlow)"/>
+</svg>

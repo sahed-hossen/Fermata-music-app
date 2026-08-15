@@ -1,0 +1,201 @@
+import { Play, Pause, MoreHorizontal, Clock, Heart, Music } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { usePlayerStore } from '@/store/playerStore'
+import type { Track } from '@/types'
+import AddToPlaylistMenu from './AddToPlaylistMenu'
+import { checkLibrary, addToLibrary, removeFromLibrary } from '@/api/library'
+import { useToastStore } from '@/store/toastStore'
+
+function formatDuration(seconds: number | null) {
+  if (!seconds) return '--:--'
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}:${Math.round(s).toString().padStart(2, '0')}`
+}
+
+interface Props {
+  track: Track
+  index: number
+  tracks: Track[]
+  onPlay?: (track: Track) => void
+  playlistId?: number
+  onRemove?: (trackId: number) => void
+}
+
+export default function TrackRow({ track, index, tracks, onPlay, playlistId, onRemove }: Props) {
+  const currentTrack = usePlayerStore((s) => s.currentTrack)
+  const isPlaying = usePlayerStore((s) => s.isPlaying)
+  const setTrack = usePlayerStore((s) => s.setTrack)
+  const setQueue = usePlayerStore((s) => s.setQueue)
+  const setIsPlaying = usePlayerStore((s) => s.setIsPlaying)
+  const toast = useToastStore()
+
+  const [showMenu, setShowMenu] = useState(false)
+  const [liked, setLiked] = useState<boolean | null>(null)
+  const [liking, setLiking] = useState(false)
+
+  const isActive = currentTrack?.id === track.id
+  const isCurrentlyPlaying = isActive && isPlaying
+
+  // Check if this track is in the library on mount
+  useEffect(() => {
+    let cancelled = false
+    checkLibrary([track.id])
+      .then((res) => { if (!cancelled) setLiked(res[track.id] ?? false) })
+      .catch(() => { if (!cancelled) setLiked(false) })
+    return () => { cancelled = true }
+  }, [track.id])
+
+  const handleToggleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (liking || liked === null) return
+    setLiking(true)
+    try {
+      if (liked) {
+        await removeFromLibrary([track.id])
+        setLiked(false)
+        window.dispatchEvent(new Event('library-updated'))
+        toast.info(`Removed "${track.title}" from Library`)
+      } else {
+        await addToLibrary([track.id])
+        setLiked(true)
+        window.dispatchEvent(new Event('library-updated'))
+        toast.success(`Added "${track.title}" to Library`)
+      }
+    } catch {
+      toast.error('Failed to update library')
+    } finally {
+      setLiking(false)
+    }
+  }
+
+  const handlePlay = () => {
+    if (isActive) {
+      setIsPlaying(!isPlaying)
+    } else {
+      setQueue(tracks)
+      setTrack(track)
+      setIsPlaying(true)
+    }
+    if (onPlay) {
+      onPlay(track)
+    }
+  }
+
+  return (
+    <div
+      className={`group grid grid-cols-[32px_1fr_32px_65px_36px] md:grid-cols-[32px_1fr_1fr_36px_65px_36px] gap-2 md:gap-3 items-center px-2 md:px-4 py-2.5 rounded-lg transition-colors cursor-pointer select-none ${
+        isActive ? 'bg-surface-highlight/80' : 'hover:bg-surface-highlight/50'
+      }`}
+      onDoubleClick={handlePlay}
+    >
+      {/* Index / Play Icon */}
+      <div className="flex items-center justify-center">
+        <span
+          className={`text-sm tabular-nums ${
+            isActive ? 'text-spotify-green font-bold' : 'text-subtext'
+          } group-hover:hidden`}
+        >
+          {index + 1}
+        </span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            handlePlay()
+          }}
+          className="hidden group-hover:flex items-center justify-center text-primary cursor-pointer"
+        >
+          {isCurrentlyPlaying ? <Pause size={14} /> : <Play size={14} className="ml-0.5" fill="currentColor" />}
+        </button>
+      </div>
+
+      {/* Title & Artist */}
+      <div className="flex items-center gap-3 min-w-0">
+        {track.cover_url ? (
+          <img
+            src={track.cover_url}
+            alt={track.title}
+            loading="lazy"
+            className="w-9 h-9 rounded object-cover shrink-0 shadow animate-in fade-in"
+          />
+        ) : (
+          <div className="w-9 h-9 rounded bg-surface-highlight flex items-center justify-center shrink-0 shadow">
+            <Music size={14} className="text-subtext/50" />
+          </div>
+        )}
+        <div className="min-w-0">
+          <p className={`text-sm font-semibold truncate ${isActive ? 'text-spotify-green' : 'text-primary'}`}>
+            {track.title}
+          </p>
+          <p className="text-xs text-subtext truncate mt-0.5">
+            {track.artist_name || 'Unknown Artist'}
+            <span className="md:hidden">
+              {track.album_title ? ` • ${track.album_title}` : ''}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      {/* Album (desktop only) */}
+      <p className="hidden md:block text-sm text-subtext truncate">{track.album_title || '—'}</p>
+
+      {/* Heart / Like button */}
+      <div className="flex items-center justify-center">
+        <button
+          onClick={handleToggleLike}
+          disabled={liking || liked === null}
+          title={liked ? 'Remove from Library' : 'Add to Library'}
+          className={`p-1.5 rounded-full transition-all cursor-pointer ${
+            liked
+              ? 'text-spotify-green opacity-100 scale-105'
+              : 'text-subtext opacity-0 group-hover:opacity-100 hover:text-spotify-green hover:scale-110'
+          } ${liking ? 'animate-pulse' : ''}`}
+        >
+          <Heart size={15} fill={liked ? 'currentColor' : 'none'} />
+        </button>
+      </div>
+
+      {/* Duration */}
+      <span className="text-xs text-subtext tabular-nums text-right font-medium">
+        {formatDuration(track.duration_seconds)}
+      </span>
+
+      {/* More Menu */}
+      <div className="relative flex justify-end">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            setShowMenu(!showMenu)
+          }}
+          className="p-1.5 rounded-full text-subtext opacity-0 group-hover:opacity-100 hover:text-primary transition-all cursor-pointer"
+          title="More options"
+        >
+          <MoreHorizontal size={16} />
+        </button>
+        {showMenu && (
+          <AddToPlaylistMenu
+            trackId={track.id}
+            playlistId={playlistId}
+            onClose={() => setShowMenu(false)}
+            onRemove={onRemove ? () => onRemove(track.id) : undefined}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+export function TrackListHeader() {
+  return (
+    <div className="grid grid-cols-[32px_1fr_32px_65px_36px] md:grid-cols-[32px_1fr_1fr_36px_65px_36px] gap-2 md:gap-3 items-center px-2 md:px-4 py-2 border-b border-border-theme text-xs font-bold text-subtext uppercase tracking-wider">
+      <span className="text-center">#</span>
+      <span>Title</span>
+      <span className="hidden md:block">Album</span>
+      <span className="text-center">♡</span>
+      <span className="text-right flex items-center justify-end gap-1">
+        <Clock size={14} />
+      </span>
+      <span />
+    </div>
+  )
+}

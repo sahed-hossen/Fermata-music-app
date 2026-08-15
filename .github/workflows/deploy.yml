@@ -37,7 +37,7 @@ jobs:
         run: npm run build
         env:
           # Vite reads this at build time to set the base path
-          BASE_URL: /FerMata/
+          BASE_URL: /Fermata-music-app/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

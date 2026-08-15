@@ -39,9 +39,9 @@ jobs:
           # Vite reads this at build time to set the base path
           BASE_URL: /Fermata-music-app/
           # Backend API URL (Render)
-          VITE_API_HOSTED_BASE: https://fermata-music-app-fage.onrender.com
+          VITE_API_HOSTED_BASE: ${{ secrets.VITE_API_HOSTED_BASE }}
           # Cloudflare Turnstile site key
-          VITE_TURNSTILE_SITE_KEY: 0x4AAAAAAEB65vi5LqBGttO_
+          VITE_TURNSTILE_SITE_KEY: ${{ secrets.VITE_TURNSTILE_SITE_KEY }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

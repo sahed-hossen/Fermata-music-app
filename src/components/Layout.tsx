@@ -128,21 +128,21 @@ export default function Layout() {
 
         <span className="text-md font-bold tracking-tight">Fermata</span>
 
-        {/* Right: Settings & Theme Toggle */}
+        {/* Right: Theme Toggle & Settings */}
         <div className="flex items-center gap-1">
-          <button
-            onClick={() => setIsSettingsModalOpen(true)}
-            className="p-2 rounded-full hover:bg-surface-highlight text-subtext hover:text-primary transition-colors cursor-pointer"
-            title="Settings"
-          >
-            <Settings size={18} />
-          </button>
           <button
             onClick={toggleTheme}
             className="p-2 rounded-full hover:bg-surface-highlight text-subtext hover:text-primary transition-colors cursor-pointer"
             title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button
+            onClick={() => setIsSettingsModalOpen(true)}
+            className="p-2 rounded-full hover:bg-surface-highlight text-subtext hover:text-primary transition-colors cursor-pointer"
+            title="Settings"
+          >
+            <Settings size={18} />
           </button>
         </div>
       </header>

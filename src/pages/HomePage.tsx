@@ -198,13 +198,15 @@ export default function HomePage() {
             </h1>
           </div>
 
-          <div className="w-full sm:w-[440px] md:w-[520px] lg:w-[580px] ml-auto shrink-0">
+          {/* Search wrapper: relative + z-50 so the dropdown floats above sections below */}
+          <div className="relative z-50 w-full sm:w-[440px] md:w-[520px] lg:w-[580px] ml-auto shrink-0">
             <SearchInput
               value={searchQuery}
               onChange={(val) => setSearchQuery(val)}
               onSearch={(val) => {
                 if (val.trim()) navigate(`/search?q=${encodeURIComponent(val.trim())}`)
               }}
+              showSuggestions={false}
             />
           </div>
         </div>

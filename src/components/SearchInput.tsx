@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Search, X, Play, Music, Flame, TrendingUp, User, Disc } from 'lucide-react'
 import { search } from '@/api/search'
 import { usePlayerStore } from '@/store/playerStore'
@@ -12,6 +12,7 @@ interface Props {
   debounceMs?: number
   className?: string
   autoFocus?: boolean
+  showSuggestions?: boolean
 }
 
 const PLACEHOLDERS = [
@@ -87,6 +88,7 @@ export default function SearchInput({
   debounceMs = 200,
   className = '',
   autoFocus = false,
+  showSuggestions = true,
 }: Props) {
   const [localValue, setLocalValue] = useState(value)
   const [isFocused, setIsFocused] = useState(false)
@@ -98,6 +100,9 @@ export default function SearchInput({
   const [suggestedArtists, setSuggestedArtists] = useState<Artist[]>([])
   const [suggestedAlbums, setSuggestedAlbums] = useState<Album[]>([])
   const [loadingSuggestions, setLoadingSuggestions] = useState(false)
+
+  // Fixed-position dropdown coords (escapes overflow:hidden parents)
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({})
 
   const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -147,8 +152,9 @@ export default function SearchInput({
     return () => window.removeEventListener('keydown', handleGlobalKeyDown)
   }, [])
 
-  // Fetch or filter live search suggestions
+  // Fetch or filter live search suggestions (only when showSuggestions=true)
   useEffect(() => {
+    if (!showSuggestions) return
     const query = localValue.trim().toLowerCase()
     if (!query) {
       setSuggestedTracks([])
@@ -196,7 +202,34 @@ export default function SearchInput({
     return () => {
       if (suggestTimerRef.current) clearTimeout(suggestTimerRef.current)
     }
-  }, [localValue])
+  }, [localValue, showSuggestions])
+
+  // Recalculate dropdown position whenever focus state or window size changes
+  const updateDropdownPosition = useCallback(() => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    setDropdownStyle({
+      position: 'fixed',
+      top: rect.bottom + 10,
+      left: rect.left,
+      width: rect.width,
+      zIndex: 9999,
+    })
+  }, [])
+
+  useEffect(() => {
+    if (isFocused && showSuggestions) updateDropdownPosition()
+  }, [isFocused, showSuggestions, updateDropdownPosition])
+
+  useEffect(() => {
+    if (!showSuggestions) return
+    window.addEventListener('resize', updateDropdownPosition)
+    window.addEventListener('scroll', updateDropdownPosition, true)
+    return () => {
+      window.removeEventListener('resize', updateDropdownPosition)
+      window.removeEventListener('scroll', updateDropdownPosition, true)
+    }
+  }, [showSuggestions, updateDropdownPosition])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value
@@ -243,24 +276,22 @@ export default function SearchInput({
   }
 
   const activePlaceholder = placeholder || PLACEHOLDERS[placeholderIndex]
-  const showDropdown = isFocused
+  const showDropdown = isFocused && showSuggestions
 
   return (
     <div className={`relative group w-full ${className}`} ref={containerRef}>
       {/* Jitter Animated Gradient Glow Border */}
       <div
-        className={`absolute -inset-[2px] rounded-full bg-gradient-to-r from-spotify-green via-purple-500 to-blue-500 transition-all duration-500 blur-[3px] ${
-          isFocused ? 'opacity-90 scale-[1.01] animate-pulse' : 'opacity-25 group-hover:opacity-45'
-        }`}
+        className={`absolute -inset-[2px] rounded-full bg-gradient-to-r from-spotify-green via-purple-500 to-blue-500 transition-all duration-500 blur-[3px] ${isFocused ? 'opacity-90 scale-[1.01] animate-pulse' : 'opacity-25 group-hover:opacity-45'
+          }`}
       />
 
       {/* Main Bar Wrapper */}
       <div
-        className={`relative flex items-center w-full rounded-full bg-surface backdrop-blur-md border transition-all duration-300 shadow-lg ${
-          isFocused
+        className={`relative flex items-center w-full rounded-full bg-surface backdrop-blur-md border transition-all duration-300 shadow-lg ${isFocused
             ? 'border-spotify-green/60 shadow-spotify-green/20 ring-4 ring-spotify-green/15 scale-[1.01]'
             : 'border-border-theme hover:border-primary/20 bg-surface'
-        }`}
+          }`}
       >
         {/* Search Icon */}
         <div
@@ -272,9 +303,8 @@ export default function SearchInput({
         >
           <Search
             size={19}
-            className={`transition-all duration-300 ${
-              isFocused ? 'text-spotify-green scale-110' : 'text-subtext group-hover:text-primary'
-            }`}
+            className={`transition-all duration-300 ${isFocused ? 'text-spotify-green scale-110' : 'text-subtext group-hover:text-primary'
+              }`}
           />
         </div>
 
@@ -294,9 +324,8 @@ export default function SearchInput({
           {/* Animated Placeholder Overlay */}
           {!localValue && (
             <div
-              className={`absolute left-3 pointer-events-none text-sm text-subtext/60 truncate transition-all duration-300 ${
-                placeholderAnim ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-              }`}
+              className={`absolute left-3 pointer-events-none text-sm text-subtext/60 truncate transition-all duration-300 ${placeholderAnim ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                }`}
             >
               {activePlaceholder}
             </div>
@@ -321,9 +350,12 @@ export default function SearchInput({
         </div>
       </div>
 
-      {/* LIVE AUTOMATIC SONG SUGGESTION DROPDOWN OVERLAY */}
+      {/* LIVE AUTOMATIC SONG SUGGESTION DROPDOWN OVERLAY — fixed position escapes overflow:hidden parents */}
       {showDropdown && (
-        <div className="absolute left-0 right-0 top-full mt-2.5 bg-surface-elevated/95 backdrop-blur-2xl border border-border-theme rounded-2xl shadow-2xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150 p-2 space-y-2 max-h-[380px] overflow-y-auto scrollbar-thin text-primary">
+        <div
+          className="bg-surface-elevated/95 backdrop-blur-2xl border border-border-theme rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 p-2 space-y-2 max-h-[380px] overflow-y-auto scrollbar-thin text-primary"
+          style={dropdownStyle}
+        >
           {/* State 1: Input empty — show Trending Search Suggestions */}
           {!localValue.trim() && (
             <div className="p-2 space-y-2">

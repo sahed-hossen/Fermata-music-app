@@ -169,25 +169,25 @@ export default function SpatialAudioModal() {
   if (!is3DModalOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
       <div 
-        className="relative bg-[#12121e] border border-[#22222f] rounded-2xl p-6 w-full max-w-md shadow-2xl text-left mx-4 flex flex-col max-h-[90vh] overflow-y-auto"
+        className="relative bg-surface-elevated border border-border-theme rounded-2xl p-6 w-full max-w-md shadow-2xl text-left mx-4 flex flex-col max-h-[90vh] overflow-y-auto text-primary"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#22222f] pb-4 mb-4">
+        <div className="flex items-center justify-between border-b border-border-theme pb-4 mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 animate-pulse">
+            <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-500 dark:text-purple-400 animate-pulse">
               <Headphones size={18} />
             </div>
             <div>
-              <h2 className="text-md font-bold text-white leading-tight">3D Spatial Audio</h2>
-              <p className="text-[10px] text-[#8d8ba6] mt-0.5">Custom Binaural Environment</p>
+              <h2 className="text-md font-bold text-primary leading-tight">3D Spatial Audio</h2>
+              <p className="text-[10px] text-subtext mt-0.5">Custom Binaural Environment</p>
             </div>
           </div>
           <button
             onClick={() => set3DModalOpen(false)}
-            className="p-1.5 rounded-full hover:bg-[#22222f] text-[#8d8ba6] hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-full hover:bg-surface-highlight text-subtext hover:text-primary transition-colors cursor-pointer"
             title="Close Settings"
           >
             <X size={18} />
@@ -195,7 +195,7 @@ export default function SpatialAudioModal() {
         </div>
 
         {/* Orbit Visualization Stage */}
-        <div className="relative w-full aspect-square bg-[#0a0a12]/50 border border-[#22222f] rounded-xl overflow-hidden mb-5">
+        <div className="relative w-full aspect-square bg-surface border border-border-theme rounded-xl overflow-hidden mb-5">
           <canvas 
             ref={canvasRef} 
             width={400} 
@@ -203,10 +203,10 @@ export default function SpatialAudioModal() {
             className="w-full h-full block"
           />
           {!is3DEnabled && (
-            <div className="absolute inset-0 bg-[#0a0a12]/80 backdrop-blur-[1px] flex flex-col items-center justify-center text-center p-4">
-              <Sparkles size={24} className="text-[#8d8ba6] mb-2" />
-              <p className="text-sm font-semibold text-white">Spatial Audio is Off</p>
-              <p className="text-xs text-[#8d8ba6] max-w-[200px] mt-1">Enable 3D Spatial Mode below to activate orbital audio</p>
+            <div className="absolute inset-0 bg-surface/85 backdrop-blur-[1px] flex flex-col items-center justify-center text-center p-4">
+              <Sparkles size={24} className="text-subtext mb-2" />
+              <p className="text-sm font-semibold text-primary">Spatial Audio is Off</p>
+              <p className="text-xs text-subtext max-w-[200px] mt-1">Enable 3D Spatial Mode below to activate orbital audio</p>
             </div>
           )}
         </div>
@@ -214,10 +214,10 @@ export default function SpatialAudioModal() {
         {/* Options Panel */}
         <div className="space-y-4">
           {/* Spatial Mode Toggle */}
-          <div className="flex items-center justify-between py-2 border-b border-[#22222f]/50">
+          <div className="flex items-center justify-between py-2 border-b border-border-theme">
             <div>
-              <div className="text-sm font-medium text-white">3D Spatial Mode</div>
-              <div className="text-[10px] text-[#8d8ba6] mt-0.5">Orbits the sound source around your head</div>
+              <div className="text-sm font-medium text-primary">3D Spatial Mode</div>
+              <div className="text-[10px] text-subtext mt-0.5">Orbits the sound source around your head</div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer select-none">
               <input
@@ -226,67 +226,74 @@ export default function SpatialAudioModal() {
                 onChange={(e) => set3DEnabled(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-10 h-6 bg-[#22222f] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#e7e6f3] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+              <div className="w-10 h-6 bg-surface-highlight peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
           </div>
 
           {/* Reverb Toggle */}
-          <div className="flex items-center justify-between py-2 border-b border-[#22222f]/50">
+          <div className={`flex items-center justify-between py-2 border-b border-border-theme transition-opacity duration-200 ${!is3DEnabled ? 'opacity-40 pointer-events-none' : ''}`}>
             <div>
-              <div className="text-sm font-medium text-white">Room Depth Reverb</div>
-              <div className="text-[10px] text-[#8d8ba6] mt-0.5 font-normal">Simulates high-fidelity acoustic reflections</div>
+              <div className="text-sm font-medium text-primary">Spatial Reverb</div>
+              <div className="text-[10px] text-subtext mt-0.5">Simulates acoustic reflections in a virtual hall</div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={is3DReverbEnabled}
-                disabled={!is3DEnabled}
                 onChange={(e) => set3DReverbEnabled(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-10 h-6 bg-[#22222f] peer-focus:outline-none rounded-full peer peer-disabled:opacity-30 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#e7e6f3] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4de8c8]"></div>
+              <div className="w-10 h-6 bg-surface-highlight peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
             </label>
           </div>
 
           {/* Orbit Speed Slider */}
-          <div className="space-y-1.5 py-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-[#8d8ba6]">Orbit Speed</span>
-              <span className="font-medium text-white">{orbitSpeedSeconds}s / rev</span>
+          <div className={`py-1 transition-opacity duration-200 ${!is3DEnabled ? 'opacity-40 pointer-events-none' : ''}`}>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs font-medium text-subtext">Orbit Speed</span>
+              <span className="text-xs font-mono text-purple-500 dark:text-purple-400 font-semibold">{orbitSpeedSeconds}s / rev</span>
             </div>
             <input
               type="range"
-              min={2}
+              min={4}
               max={30}
+              step={1}
               value={orbitSpeedSeconds}
-              disabled={!is3DEnabled}
               onChange={(e) => setOrbitSpeedSeconds(Number(e.target.value))}
-              className="w-full accent-[#4de8c8] h-1.5 bg-[#22222f] rounded-lg cursor-pointer disabled:opacity-30"
+              className="w-full accent-purple-500 cursor-pointer h-1.5 bg-surface-highlight rounded-lg"
             />
+            <div className="flex justify-between text-[9px] text-subtext mt-1">
+              <span>Fast (4s)</span>
+              <span>Slow (30s)</span>
+            </div>
           </div>
 
           {/* Orbit Height Slider */}
-          <div className="space-y-1.5 py-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-[#8d8ba6]">Vertical Elevation</span>
-              <span className="font-medium text-white">{orbitHeightPercent}%</span>
+          <div className={`py-1 transition-opacity duration-200 ${!is3DEnabled ? 'opacity-40 pointer-events-none' : ''}`}>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs font-medium text-subtext">Vertical Oscillation</span>
+              <span className="text-xs font-mono text-purple-500 dark:text-purple-400 font-semibold">{orbitHeightPercent}%</span>
             </div>
             <input
               type="range"
               min={0}
               max={100}
+              step={5}
               value={orbitHeightPercent}
-              disabled={!is3DEnabled}
               onChange={(e) => setOrbitHeightPercent(Number(e.target.value))}
-              className="w-full accent-[#4de8c8] h-1.5 bg-[#22222f] rounded-lg cursor-pointer disabled:opacity-30"
+              className="w-full accent-purple-500 cursor-pointer h-1.5 bg-surface-highlight rounded-lg"
             />
+            <div className="flex justify-between text-[9px] text-subtext mt-1">
+              <span>Flat Plane</span>
+              <span>Full 3D Dome</span>
+            </div>
           </div>
         </div>
 
-        {/* Tip text */}
-        <div className="mt-5 p-3 rounded-lg bg-[#0a0a12]/30 border border-[#22222f]/30 text-[10px] text-[#8d8ba6] leading-normal flex items-start gap-2">
-          <Sliders size={12} className="text-purple-400 shrink-0 mt-0.5" />
-          <span>This effect simulates headphone HRTF listening. Connect stereo headphones for the full 3D spatial effect. Normal speakers will map to stereo pan.</span>
+        {/* Tip Badge */}
+        <div className="mt-5 p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-[11px] text-purple-600 dark:text-purple-300 leading-snug flex items-start gap-2">
+          <Sparkles size={16} className="shrink-0 mt-0.5" />
+          <span>For the best immersive 3D binaural effect, please listen with stereo headphones or earphones.</span>
         </div>
       </div>
     </div>

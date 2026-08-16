@@ -84,17 +84,15 @@ export default function TrackRow({ track, index, tracks, onPlay, playlistId, onR
 
   return (
     <div
-      className={`group grid grid-cols-[32px_1fr_32px_65px_36px] md:grid-cols-[32px_1fr_1fr_36px_65px_36px] gap-2 md:gap-3 items-center px-2 md:px-4 py-2.5 rounded-lg transition-colors cursor-pointer select-none ${
-        isActive ? 'bg-surface-highlight/80' : 'hover:bg-surface-highlight/50'
-      }`}
+      className={`group grid grid-cols-[32px_1fr_32px_65px_36px] md:grid-cols-[32px_1fr_1fr_36px_65px_36px] gap-2 md:gap-3 items-center px-2 md:px-4 py-2.5 rounded-lg transition-colors cursor-pointer select-none ${isActive ? 'bg-surface-highlight/80' : 'hover:bg-surface-highlight/50'
+        }`}
       onDoubleClick={handlePlay}
     >
       {/* Index / Play Icon */}
       <div className="flex items-center justify-center">
         <span
-          className={`text-sm tabular-nums ${
-            isActive ? 'text-spotify-green font-bold' : 'text-subtext'
-          } group-hover:hidden`}
+          className={`text-sm tabular-nums ${isActive ? 'text-spotify-green font-bold' : 'text-subtext'
+            } group-hover:hidden`}
         >
           {index + 1}
         </span>
@@ -145,11 +143,10 @@ export default function TrackRow({ track, index, tracks, onPlay, playlistId, onR
           onClick={handleToggleLike}
           disabled={liking || liked === null}
           title={liked ? 'Remove from Library' : 'Add to Library'}
-          className={`p-1.5 rounded-full transition-all cursor-pointer ${
-            liked
+          className={`p-1.5 rounded-full transition-all cursor-pointer ${liked
               ? 'text-spotify-green opacity-100 scale-105'
               : 'text-subtext opacity-0 group-hover:opacity-100 hover:text-spotify-green hover:scale-110'
-          } ${liking ? 'animate-pulse' : ''}`}
+            } ${liking ? 'animate-pulse' : ''}`}
         >
           <Heart size={15} fill={liked ? 'currentColor' : 'none'} />
         </button>

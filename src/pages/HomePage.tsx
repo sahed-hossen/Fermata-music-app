@@ -100,7 +100,7 @@ export default function HomePage() {
   /* ── skeleton loading screen ── */
   if (loading) {
     return (
-      <div className="relative min-h-screen bg-base -m-6 p-6 pb-32 overflow-hidden">
+      <div className="relative min-h-screen bg-base -m-4 lg:-m-6 p-4 lg:p-6 pb-32 overflow-hidden">
         <style>{`
           @keyframes shimmer {
             0%   { background-position: -600px 0; }
@@ -109,9 +109,9 @@ export default function HomePage() {
           .skel {
             border-radius: 10px;
             background: linear-gradient(90deg,
-              rgba(255,255,255,0.04) 25%,
-              rgba(255,255,255,0.09) 50%,
-              rgba(255,255,255,0.04) 75%);
+              var(--surface-highlight) 25%,
+              var(--border-color) 50%,
+              var(--surface-highlight) 75%);
             background-size: 600px 100%;
             animation: shimmer 1.4s infinite linear;
           }
@@ -120,7 +120,7 @@ export default function HomePage() {
           <div className="skel" style={{ height: 28, width: 200 }} />
           <div className="skel" style={{ height: 36, width: 280, borderRadius: 999, marginLeft: 'auto' }} />
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14, marginBottom: 36 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14, marginBottom: 36 }}>
           {[...Array(4)].map((_, i) => (
             <div key={i} className="skel" style={{ height: 68, borderRadius: 16 }} />
           ))}
@@ -128,7 +128,7 @@ export default function HomePage() {
         <div className="skel" style={{ height: 20, width: 180, marginBottom: 14 }} />
         <div className="skel" style={{ height: 200, borderRadius: 16, marginBottom: 36 }} />
         <div className="skel" style={{ height: 20, width: 160, marginBottom: 14 }} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6,1fr)', gap: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 12 }}>
           {[...Array(6)].map((_, i) => (
             <div key={i}>
               <div className="skel" style={{ height: 110, borderRadius: 14, marginBottom: 8 }} />
@@ -142,7 +142,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-base text-primary -m-6 p-6 pb-32 overflow-hidden transition-colors duration-200">
+    <div className="relative min-h-screen bg-base text-primary -m-4 lg:-m-6 p-4 lg:p-6 pb-40 lg:pb-32 overflow-hidden transition-colors duration-200">
       {/* Soundstage Login Transition Splash */}
       {showSplash && <LoginWelcomeSplash onComplete={() => setShowSplash(false)} />}
       <style>{`
@@ -178,7 +178,7 @@ export default function HomePage() {
         .greeting-text {
           font-family: 'Plus Jakarta Sans', 'Outfit', 'Inter', sans-serif;
           font-weight: 800;
-          color: #ffffff;
+          color: var(--primary);
           letter-spacing: -0.03em;
         }
         /* ── search input ── */
@@ -193,8 +193,8 @@ export default function HomePage() {
         {/* ── Top Header Bar with Right-Shifted Animated Search Bar ── */}
         <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${ready ? 'sec-0' : 'opacity-0'}`}>
           <div className="min-w-0 shrink-0">
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.5rem] font-extrabold tracking-tight leading-none greeting-text">
-              {token && user ? `${greeting()}, ${user.username}` : greeting()}
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.5rem] font-extrabold tracking-tight leading-none text-primary greeting-text">
+              {token && user ? `${greeting()}, ${user.full_name || user.username}` : greeting()}
             </h1>
           </div>
 
@@ -301,6 +301,29 @@ export default function HomePage() {
                 )
               })}
             </CardGrid>
+          </div>
+        )}
+
+        {/* ── Fallback Discovery / Welcome State when no history exists yet ── */}
+        {recentTracks.length === 0 && mostPlayedTracks.length === 0 && recentAlbums.length === 0 && (
+          <div className={`p-8 rounded-3xl bg-surface border border-border-theme text-center space-y-4 shadow-sm ${ready ? 'sec-1' : 'opacity-0'}`}>
+            <div className="w-16 h-16 rounded-2xl bg-spotify-green/10 border border-spotify-green/20 flex items-center justify-center text-spotify-green mx-auto">
+              <Search size={28} />
+            </div>
+            <div className="max-w-md mx-auto space-y-1.5">
+              <h3 className="text-lg font-bold text-primary">Discover & Play Your Favorite Music</h3>
+              <p className="text-xs text-subtext leading-relaxed">
+                Search for your favorite songs, artists, and albums using the search bar above or explore the library.
+              </p>
+            </div>
+            <div className="pt-2">
+              <button
+                onClick={() => navigate('/search')}
+                className="px-6 py-2.5 rounded-full bg-spotify-green text-accent-text text-xs font-bold hover:bg-spotify-green-hover transition-all cursor-pointer shadow-md"
+              >
+                Start Exploring
+              </button>
+            </div>
           </div>
         )}
 

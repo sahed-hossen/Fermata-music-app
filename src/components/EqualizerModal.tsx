@@ -87,25 +87,25 @@ export default function EqualizerModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
       <div 
-        className="relative bg-[#12121e] border border-[#22222f] rounded-2xl p-6 w-full max-w-2xl shadow-2xl text-left mx-4 flex flex-col max-h-[90vh] overflow-y-auto"
+        className="relative bg-surface-elevated border border-border-theme rounded-2xl p-6 w-full max-w-2xl shadow-2xl text-left mx-4 flex flex-col max-h-[90vh] overflow-y-auto text-primary"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#22222f] pb-4 mb-5">
+        <div className="flex items-center justify-between border-b border-border-theme pb-4 mb-5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400">
+            <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-500 dark:text-purple-400">
               <Sliders size={18} />
             </div>
             <div>
-              <h2 className="text-md font-bold text-white leading-tight">VLC-Style 10-Band Equalizer</h2>
-              <p className="text-[10px] text-[#8d8ba6] mt-0.5">Dual-channel acoustic preamp & decibel scaling</p>
+              <h2 className="text-md font-bold text-primary leading-tight">VLC-Style 10-Band Equalizer</h2>
+              <p className="text-[10px] text-subtext mt-0.5">Dual-channel acoustic preamp & decibel scaling</p>
             </div>
           </div>
           <button
             onClick={() => setEQModalOpen(false)}
-            className="p-1.5 rounded-full hover:bg-[#22222f] text-[#8d8ba6] hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-full hover:bg-surface-highlight text-subtext hover:text-primary transition-colors cursor-pointer"
             title="Close Equalizer"
           >
             <X size={18} />
@@ -113,15 +113,15 @@ export default function EqualizerModal() {
         </div>
 
         {/* EQ Enable Toggle Switch */}
-        <div className="flex items-center justify-between py-4 border-b border-[#22222f] mb-6">
+        <div className="flex items-center justify-between py-4 border-b border-border-theme mb-6">
           <div>
-            <h3 className="text-sm font-semibold text-white">Enable Equalizer</h3>
-            <p className="text-[10px] text-[#8d8ba6] mt-0.5">Acoustic frequency response shaping</p>
+            <h3 className="text-sm font-semibold text-primary">Enable Equalizer</h3>
+            <p className="text-[10px] text-subtext mt-0.5">Acoustic frequency response shaping</p>
           </div>
           <button
             onClick={() => setEQEnabled(!isEQEnabled)}
             className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-              isEQEnabled ? 'bg-purple-600' : 'bg-[#22222f]'
+              isEQEnabled ? 'bg-purple-600' : 'bg-surface-highlight'
             }`}
           >
             <div
@@ -135,16 +135,16 @@ export default function EqualizerModal() {
         {/* Preset Selector */}
         <div className={`mb-6 flex items-center gap-4 transition-opacity duration-200 ${!isEQEnabled ? 'opacity-40 pointer-events-none' : ''}`}>
           <div className="flex flex-col">
-            <label className="text-[10px] font-semibold uppercase tracking-wider text-[#8d8ba6] mb-1.5">
+            <label className="text-[10px] font-semibold uppercase tracking-wider text-subtext mb-1.5">
               Preset Selection
             </label>
             <select
               value={eqPreset}
               onChange={(e) => handlePresetSelect(e.target.value)}
-              className="bg-[#1c1c2e] border border-[#323249] rounded-lg px-3 py-2 text-xs text-white outline-none cursor-pointer hover:border-purple-500 transition-colors focus:border-purple-500 font-medium min-w-[200px]"
+              className="bg-surface-highlight border border-border-theme rounded-lg px-3 py-2 text-xs text-primary outline-none cursor-pointer hover:border-purple-500 transition-colors focus:border-purple-500 font-medium min-w-[200px]"
             >
               {Object.keys(PRESETS).map((key) => (
-                <option key={key} value={key} className="bg-[#12121e]">
+                <option key={key} value={key} className="bg-surface text-primary">
                   {PRESETS[key].name}
                 </option>
               ))}
@@ -157,7 +157,7 @@ export default function EqualizerModal() {
           </div>
           {eqPreset === 'custom' && (
             <div className="mt-4">
-              <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-600/20 text-purple-400 border border-purple-600/30">
+              <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-600/20 text-purple-500 dark:text-purple-400 border border-purple-600/30">
                 Custom Configuration
               </span>
             </div>
@@ -165,12 +165,12 @@ export default function EqualizerModal() {
         </div>
 
         {/* Equalizer Grid (Preamp + 10 Bands) */}
-        <div className={`bg-[#0a0a12]/50 border border-[#22222f] rounded-xl p-5 flex items-stretch h-72 mb-5 overflow-x-auto gap-3 transition-opacity duration-200 ${!isEQEnabled ? 'opacity-40 pointer-events-none' : ''}`}>
+        <div className={`bg-surface border border-border-theme rounded-xl p-5 flex items-stretch h-72 mb-5 overflow-x-auto gap-3 transition-opacity duration-200 ${!isEQEnabled ? 'opacity-40 pointer-events-none' : ''}`}>
           
           {/* Preamp Column */}
-          <div className="flex flex-col items-center pr-4 border-r border-[#22222f] min-w-[56px]">
+          <div className="flex flex-col items-center pr-4 border-r border-border-theme min-w-[56px]">
             {/* Value display */}
-            <span className="text-[10px] font-bold text-amber-400 mb-3 w-10 text-center tabular-nums">
+            <span className="text-[10px] font-bold text-amber-500 dark:text-amber-400 mb-3 w-10 text-center tabular-nums">
               {eqPreamp > 0 ? `+${eqPreamp}` : eqPreamp}
             </span>
 
@@ -195,8 +195,8 @@ export default function EqualizerModal() {
             </div>
 
             {/* Labels */}
-            <span className="text-[10px] text-amber-400 font-bold mt-3">Preamp</span>
-            <span className="text-[8px] text-[#8d8ba6] mt-0.5">Gain dB</span>
+            <span className="text-[10px] text-amber-500 dark:text-amber-400 font-bold mt-3">Preamp</span>
+            <span className="text-[8px] text-subtext mt-0.5">Gain dB</span>
           </div>
 
           {/* 10 Slider Columns */}
@@ -206,7 +206,7 @@ export default function EqualizerModal() {
               return (
                 <div key={idx} className="flex flex-col items-center flex-1 min-w-[42px]">
                   {/* dB Display */}
-                  <span className="text-[10px] font-semibold text-purple-400 mb-3 w-8 text-center tabular-nums">
+                  <span className="text-[10px] font-semibold text-purple-500 dark:text-purple-400 mb-3 w-8 text-center tabular-nums">
                     {gainVal > 0 ? `+${gainVal}` : gainVal}
                   </span>
 
@@ -219,7 +219,7 @@ export default function EqualizerModal() {
                       step={1}
                       value={gainVal}
                       onChange={(e) => handleSliderChange(idx, Number(e.target.value))}
-                      className="accent-[#4de8c8] cursor-pointer"
+                      className="accent-spotify-green cursor-pointer"
                       style={{
                         writingMode: 'bt-lr' as any,
                         WebkitAppearance: 'slider-vertical',
@@ -231,8 +231,8 @@ export default function EqualizerModal() {
                   </div>
 
                   {/* Labels */}
-                  <span className="text-[10px] text-white font-medium mt-3 whitespace-nowrap">{band.label}</span>
-                  <span className="text-[8px] text-[#8d8ba6] mt-0.5 whitespace-nowrap">{band.sub}</span>
+                  <span className="text-[10px] text-primary font-medium mt-3 whitespace-nowrap">{band.label}</span>
+                  <span className="text-[8px] text-subtext mt-0.5 whitespace-nowrap">{band.sub}</span>
                 </div>
               )
             })}
@@ -240,7 +240,7 @@ export default function EqualizerModal() {
         </div>
 
         {/* Tip text */}
-        <div className="p-3 rounded-lg bg-[#0a0a12]/30 border border-[#22222f]/30 text-[10px] text-[#8d8ba6] leading-normal flex items-start gap-2">
+        <div className="p-3 rounded-lg bg-surface-highlight/50 border border-border-theme text-[10px] text-subtext leading-normal flex items-start gap-2">
           <span>Standard adjustments will modify frequency filters. Boost low end (31Hz to 125Hz) for bass punch or mid-range (1kHz/2kHz) to clarify vocals. Range is adjusted up to ±20dB exactly matching the VLC client.</span>
         </div>
       </div>

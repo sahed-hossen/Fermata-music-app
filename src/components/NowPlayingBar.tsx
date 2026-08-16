@@ -350,9 +350,9 @@ export default function NowPlayingBar() {
         wobbleDelay.connect(preamp)
         lfo.start()
         audio.playbackRate = 0.9
-        ;(audio as any).preservesPitch = false
-        ;(audio as any).mozPreservesPitch = false
-        ;(audio as any).webkitPreservesPitch = false
+          ; (audio as any).preservesPitch = false
+          ; (audio as any).mozPreservesPitch = false
+          ; (audio as any).webkitPreservesPitch = false
       } else {
         source.connect(preamp)
         audio.playbackRate = 1.0
@@ -561,9 +561,9 @@ export default function NowPlayingBar() {
     // If the spatial engine hasn't been initialized yet, just set playbackRate
     if (!audioContextRef.current) {
       audio.playbackRate = isLofiEnabled ? 0.9 : 1.0
-      ;(audio as any).preservesPitch = !isLofiEnabled
-      ;(audio as any).mozPreservesPitch = !isLofiEnabled
-      ;(audio as any).webkitPreservesPitch = !isLofiEnabled
+        ; (audio as any).preservesPitch = !isLofiEnabled
+        ; (audio as any).mozPreservesPitch = !isLofiEnabled
+        ; (audio as any).webkitPreservesPitch = !isLofiEnabled
       return
     }
 
@@ -598,9 +598,9 @@ export default function NowPlayingBar() {
         }
 
         audio.playbackRate = 0.9
-        ;(audio as any).preservesPitch = false
-        ;(audio as any).mozPreservesPitch = false
-        ;(audio as any).webkitPreservesPitch = false
+          ; (audio as any).preservesPitch = false
+          ; (audio as any).mozPreservesPitch = false
+          ; (audio as any).webkitPreservesPitch = false
       } else {
         // Bypass entire lofi chain: source -> preamp directly
         try { chain.highpass.disconnect() } catch (_) { /* ok */ }
@@ -613,9 +613,9 @@ export default function NowPlayingBar() {
 
         source.connect(preamp)
         audio.playbackRate = 1.0
-        ;(audio as any).preservesPitch = true
-        ;(audio as any).mozPreservesPitch = true
-        ;(audio as any).webkitPreservesPitch = true
+          ; (audio as any).preservesPitch = true
+          ; (audio as any).mozPreservesPitch = true
+          ; (audio as any).webkitPreservesPitch = true
       }
     } catch (err) {
       console.error('[Lofi Mode] Failed to re-route cassette tape chain:', err)
@@ -993,7 +993,7 @@ export default function NowPlayingBar() {
       {/* Desktop view */}
       <div
         onClick={() => usePlayerStore.setState({ isExpanded: true })}
-        className="hidden md:flex relative h-20 bg-surface-elevated/90 backdrop-blur-2xl items-center px-6 gap-4 justify-between shrink-0 cursor-pointer hover:bg-surface-elevated/95 transition-all duration-300 border-t border-white/10 shadow-[0_-8px_30px_rgba(0,0,0,0.6)] overflow-hidden group"
+        className="hidden lg:flex relative h-20 bg-surface-elevated/90 backdrop-blur-2xl items-center px-6 gap-4 justify-between shrink-0 cursor-pointer hover:bg-surface-elevated/95 transition-all duration-300 border-t border-white/10 shadow-[0_-8px_30px_rgba(0,0,0,0.6)] overflow-hidden group"
       >
         {/* Animated Top Glow Border Sweep Line */}
         <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-spotify-green to-transparent opacity-80 group-hover:opacity-100 transition-opacity">
@@ -1060,11 +1060,10 @@ export default function NowPlayingBar() {
           {/* 3D Spatial Audio Button */}
           <button
             onClick={() => set3DModalOpen(true)}
-            className={`relative p-2.5 rounded-full transition-all duration-200 cursor-pointer ${
-              is3DEnabled
+            className={`relative p-2.5 rounded-full transition-all duration-200 cursor-pointer ${is3DEnabled
                 ? 'bg-purple-500/20 text-purple-300 border border-purple-500/50 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-105'
                 : 'text-subtext hover:text-primary hover:bg-white/10 hover:scale-105'
-            }`}
+              }`}
             title={is3DEnabled ? '3D Spatial Audio Active' : 'Open 3D Spatial Audio'}
           >
             <Sparkles size={18} />
@@ -1076,11 +1075,10 @@ export default function NowPlayingBar() {
           {/* Lofi Mode Toggle Button */}
           <button
             onClick={() => setLofiEnabled(!isLofiEnabled)}
-            className={`relative p-2.5 rounded-full transition-all duration-200 cursor-pointer ${
-              isLofiEnabled
+            className={`relative p-2.5 rounded-full transition-all duration-200 cursor-pointer ${isLofiEnabled
                 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-105'
                 : 'text-subtext hover:text-primary hover:bg-white/10 hover:scale-105'
-            }`}
+              }`}
             title={isLofiEnabled ? 'Lofi Mode Active — Click to disable' : 'Enable Lofi Mode'}
           >
             <Coffee size={18} />
@@ -1092,11 +1090,10 @@ export default function NowPlayingBar() {
           {/* Equalizer (EQ) Button */}
           <button
             onClick={() => setEQModalOpen(true)}
-            className={`relative p-2.5 rounded-full transition-all duration-200 cursor-pointer ${
-              isEQEnabled
+            className={`relative p-2.5 rounded-full transition-all duration-200 cursor-pointer ${isEQEnabled
                 ? 'bg-spotify-green/20 text-spotify-green border border-spotify-green/50 shadow-[0_0_12px_rgba(124,58,237,0.3)] scale-105'
                 : 'text-subtext hover:text-primary hover:bg-white/10 hover:scale-105'
-            }`}
+              }`}
             title={isEQEnabled ? 'Equalizer Active' : 'Open Equalizer'}
           >
             <Sliders size={18} />
@@ -1137,36 +1134,41 @@ export default function NowPlayingBar() {
         </div>
       </div>
 
-      {/* Mobile view (Floating glass pill card) */}
+      {/* Mobile & Tablet Floating Glass Pill Mini Player */}
       <div
         onClick={() => usePlayerStore.setState({ isExpanded: true })}
-        className="flex md:hidden items-center justify-between mx-2 mb-2 h-14 bg-surface-elevated/95 backdrop-blur-xl border border-white/10 rounded-xl px-3 gap-2 relative overflow-hidden shadow-xl shadow-black/60 cursor-pointer hover:bg-surface-elevated/90 transition-all duration-200"
+        className="group/mini flex lg:hidden items-center justify-between mx-2.5 mb-2 h-14 bg-surface-elevated/95 dark:bg-surface-elevated/90 backdrop-blur-2xl border border-border-theme hover:border-spotify-green/40 rounded-2xl px-3 gap-2.5 relative overflow-hidden shadow-lg hover:shadow-xl shadow-black/20 dark:shadow-black/60 cursor-pointer active:scale-[0.985] transition-all duration-200 select-none"
       >
+        {/* Subtle dynamic ambient glow inside mini player */}
+        {isPlaying && (
+          <div className="absolute -left-12 -bottom-12 w-32 h-32 bg-spotify-green/15 rounded-full blur-xl pointer-events-none transition-opacity" />
+        )}
+
         {/* Progress Bar (at bottom edge of card) */}
-        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10">
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-border-theme/40">
           <div
-            className="h-full bg-gradient-to-r from-spotify-green via-purple-400 to-emerald-400 transition-all duration-100 relative"
+            className="h-full bg-gradient-to-r from-spotify-green via-indigo-400 to-purple-500 transition-all duration-100 relative"
             style={{ width: `${progress}%` }}
           />
         </div>
 
         {/* Track Info */}
-        <div className="flex items-center min-w-0 flex-1 gap-2.5">
+        <div className="flex items-center min-w-0 flex-1 gap-2.5 mr-2">
           {currentTrack.cover_url ? (
             <img
               src={currentTrack.cover_url}
               alt={currentTrack.title}
               loading="lazy"
-              className="w-9 h-9 rounded-lg object-cover shrink-0 shadow"
+              className="w-9.5 h-9.5 rounded-xl object-cover shrink-0 shadow group-hover/mini:scale-105 transition-transform duration-200"
             />
           ) : (
-            <div className="w-9 h-9 rounded-lg bg-surface-highlight flex items-center justify-center shrink-0">
+            <div className="w-9.5 h-9.5 rounded-xl bg-surface-highlight flex items-center justify-center shrink-0">
               <Music size={14} className="text-subtext" />
             </div>
           )}
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <p className="text-xs font-bold truncate text-primary">{currentTrack.title}</p>
+              <p className="text-xs font-bold truncate text-primary group-hover/mini:text-spotify-green transition-colors">{currentTrack.title}</p>
               {isPlaying && (
                 <div className="flex items-end gap-[1.5px] h-2.5 shrink-0">
                   <span className="w-[1.5px] bg-spotify-green rounded-full animate-eq-1" />
@@ -1181,72 +1183,41 @@ export default function NowPlayingBar() {
           </div>
         </div>
 
-        {/* Controls & Features */}
-        <div onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 shrink-0">
+        {/* Center Controls (Previous, Play/Pause, Next) */}
+        <div onClick={(e) => e.stopPropagation()} className="flex items-center gap-1.5 shrink-0">
           {/* Previous */}
           <button
             onClick={() => usePlayerStore.getState().playPrevious()}
-            className="p-1.5 text-subtext hover:text-primary transition-colors cursor-pointer"
+            className="p-1.5 text-subtext hover:text-primary transition-colors cursor-pointer active:scale-90"
             title="Previous"
           >
-            <SkipBack size={16} />
+            <SkipBack size={17} />
           </button>
 
           {/* Play / Pause */}
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="p-1.5 rounded-full bg-primary text-inverted hover:scale-105 active:scale-95 transition-all cursor-pointer shadow"
+            className="w-8.5 h-8.5 rounded-full bg-primary text-inverted hover:scale-105 active:scale-95 transition-all cursor-pointer shadow flex items-center justify-center"
             title={isPlaying ? 'Pause' : 'Play'}
           >
-            {isPlaying ? <Pause size={16} className="fill-current" /> : <Play size={16} className="ml-0.5 fill-current" />}
+            {isPlaying ? <Pause size={15} className="fill-current" /> : <Play size={15} className="ml-0.5 fill-current" />}
           </button>
 
           {/* Next */}
           <button
             onClick={() => playNext(true)}
-            className="p-1.5 text-subtext hover:text-primary transition-colors cursor-pointer"
+            className="p-1.5 text-subtext hover:text-primary transition-colors cursor-pointer active:scale-90"
             title="Next"
           >
-            <SkipForward size={16} />
+            <SkipForward size={17} />
           </button>
+        </div>
 
-          {/* 3D Audio */}
-          <button
-            onClick={() => set3DModalOpen(true)}
-            className={`p-1.5 rounded-full transition-colors cursor-pointer ${
-              is3DEnabled ? 'text-purple-300' : 'text-subtext hover:text-primary'
-            }`}
-            title="3D Spatial Audio"
-          >
-            <Sparkles size={16} />
-          </button>
-
-          {/* Equalizer */}
-          <button
-            onClick={() => setEQModalOpen(true)}
-            className={`p-1.5 rounded-full transition-colors cursor-pointer ${
-              isEQEnabled ? 'text-spotify-green' : 'text-subtext hover:text-primary'
-            }`}
-            title="Equalizer"
-          >
-            <Sliders size={16} />
-          </button>
-
-          {/* Lofi Mode */}
-          <button
-            onClick={() => setLofiEnabled(!isLofiEnabled)}
-            className={`p-1.5 rounded-full transition-colors cursor-pointer ${
-              isLofiEnabled ? 'text-amber-300' : 'text-subtext hover:text-primary'
-            }`}
-            title="Lofi Mode"
-          >
-            <Coffee size={16} />
-          </button>
-
-          {/* Expand */}
+        {/* Right - Expand Button */}
+        <div onClick={(e) => e.stopPropagation()} className="flex items-center shrink-0 pl-1.5 border-l border-border-theme">
           <button
             onClick={() => usePlayerStore.setState({ isExpanded: true })}
-            className="p-1.5 text-subtext hover:text-primary transition-colors cursor-pointer"
+            className="p-1.5 text-subtext hover:text-primary transition-colors cursor-pointer active:scale-90"
             title="Expand Player"
           >
             <Maximize2 size={16} />
@@ -1256,4 +1227,3 @@ export default function NowPlayingBar() {
     </>
   )
 }
-

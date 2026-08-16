@@ -256,10 +256,10 @@ export default function SearchInput({
 
       {/* Main Bar Wrapper */}
       <div
-        className={`relative flex items-center w-full rounded-full bg-[#121218]/95 backdrop-blur-md border transition-all duration-300 shadow-lg ${
+        className={`relative flex items-center w-full rounded-full bg-surface backdrop-blur-md border transition-all duration-300 shadow-lg ${
           isFocused
-            ? 'border-spotify-green/60 bg-black/90 shadow-spotify-green/20 ring-4 ring-spotify-green/15 scale-[1.01]'
-            : 'border-white/10 hover:border-white/25 bg-surface-highlight/60'
+            ? 'border-spotify-green/60 shadow-spotify-green/20 ring-4 ring-spotify-green/15 scale-[1.01]'
+            : 'border-border-theme hover:border-primary/20 bg-surface'
         }`}
       >
         {/* Search Icon */}
@@ -308,13 +308,13 @@ export default function SearchInput({
           {localValue ? (
             <button
               onMouseDown={handleClear}
-              className="p-1.5 rounded-full text-subtext hover:text-primary hover:bg-white/10 transition-all transform hover:rotate-90 duration-200 cursor-pointer"
+              className="p-1.5 rounded-full text-subtext hover:text-primary hover:bg-surface-highlight transition-all transform hover:rotate-90 duration-200 cursor-pointer"
               title="Clear search"
             >
               <X size={15} />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-1 text-[10px] font-semibold text-subtext/70 bg-white/5 border border-white/10 rounded-md font-mono select-none">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-1 text-[10px] font-semibold text-subtext bg-surface-highlight border border-border-theme rounded-md font-mono select-none">
               <span className="text-[11px]">⌘</span>K
             </kbd>
           )}
@@ -323,7 +323,7 @@ export default function SearchInput({
 
       {/* LIVE AUTOMATIC SONG SUGGESTION DROPDOWN OVERLAY */}
       {showDropdown && (
-        <div className="absolute left-0 right-0 top-full mt-2.5 bg-[#0f0f18]/95 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-2xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150 p-2 space-y-2 max-h-[380px] overflow-y-auto scrollbar-thin">
+        <div className="absolute left-0 right-0 top-full mt-2.5 bg-surface-elevated/95 backdrop-blur-2xl border border-border-theme rounded-2xl shadow-2xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150 p-2 space-y-2 max-h-[380px] overflow-y-auto scrollbar-thin text-primary">
           {/* State 1: Input empty — show Trending Search Suggestions */}
           {!localValue.trim() && (
             <div className="p-2 space-y-2">
@@ -337,10 +337,10 @@ export default function SearchInput({
                   <div
                     key={song.id}
                     onMouseDown={(e) => handleSelectSuggestion(e, song.title)}
-                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer group"
+                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-surface-highlight transition-colors cursor-pointer group"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-surface border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                      <div className="w-8 h-8 rounded-lg bg-surface-highlight border border-border-theme flex items-center justify-center shrink-0 overflow-hidden">
                         {song.cover_url ? (
                           <img src={song.cover_url} alt="Cover" className="w-full h-full object-cover" />
                         ) : (
@@ -357,10 +357,10 @@ export default function SearchInput({
 
                     <button
                       onMouseDown={(e) => handlePlayTrack(e, song)}
-                      className="w-7 h-7 rounded-full bg-spotify-green hover:bg-spotify-green-hover text-black flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-all transform group-hover:scale-105 shadow-md cursor-pointer ml-2"
+                      className="w-7 h-7 rounded-full bg-spotify-green hover:bg-spotify-green-hover text-accent-text flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-all transform group-hover:scale-105 shadow-md cursor-pointer ml-2"
                       title="Play now"
                     >
-                      <Play size={12} fill="black" className="ml-0.5" />
+                      <Play size={12} fill="currentColor" className="ml-0.5" />
                     </button>
                   </div>
                 ))}
@@ -391,10 +391,10 @@ export default function SearchInput({
                       <div
                         key={tr.id}
                         onMouseDown={(e) => handlePlayTrack(e, tr)}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/10 transition-all cursor-pointer group"
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-surface-highlight transition-all cursor-pointer group"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-surface border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                          <div className="w-8 h-8 rounded-lg bg-surface-highlight border border-border-theme flex items-center justify-center shrink-0 overflow-hidden">
                             {tr.cover_url ? (
                               <img src={tr.cover_url} alt="Cover" className="w-full h-full object-cover" />
                             ) : (
@@ -414,10 +414,10 @@ export default function SearchInput({
                         {/* Direct Play Button */}
                         <button
                           onMouseDown={(e) => handlePlayTrack(e, tr)}
-                          className="w-7 h-7 rounded-full bg-spotify-green hover:bg-spotify-green-hover text-black flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-all transform group-hover:scale-105 shadow-md cursor-pointer ml-2"
+                          className="w-7 h-7 rounded-full bg-spotify-green hover:bg-spotify-green-hover text-accent-text flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-all transform group-hover:scale-105 shadow-md cursor-pointer ml-2"
                           title="Play now"
                         >
-                          <Play size={12} fill="black" className="ml-0.5" />
+                          <Play size={12} fill="currentColor" className="ml-0.5" />
                         </button>
                       </div>
                     ))}
@@ -437,12 +437,12 @@ export default function SearchInput({
                       <div
                         key={art.id}
                         onMouseDown={(e) => handleSelectSuggestion(e, art.name)}
-                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer group"
+                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-surface-highlight transition-colors cursor-pointer group"
                       >
-                        <div className="w-7 h-7 rounded-full bg-surface border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                        <div className="w-7 h-7 rounded-full bg-surface-highlight border border-border-theme flex items-center justify-center shrink-0 overflow-hidden">
                           <User size={14} className="text-subtext" />
                         </div>
-                        <p className="text-xs font-bold text-primary group-hover:text-purple-300 truncate">
+                        <p className="text-xs font-bold text-primary group-hover:text-purple-400 truncate">
                           {art.name}
                         </p>
                       </div>
